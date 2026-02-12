@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['apple-touch-icon.png', 'icon-180.png'],
       manifest: {
-        name: 'Parent PPTO',
-        short_name: 'Parent PPTO',
+        name: 'Parent PTO',
+        short_name: 'Parent PTO',
         description: 'Parent Paid Time Off: coordinate tasks, mint PTO minutes, and protect calm.',
         theme_color: '#fff3e2',
         background_color: '#fff3e2',

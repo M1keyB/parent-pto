@@ -17,8 +17,8 @@ export function AppLayout() {
   const { toasts } = useToast();
   const location = useLocation();
   const title = useMemo(() => {
-    if (location.pathname === '/') return 'Parent PPTO';
-    return links.find((item) => item.to === location.pathname)?.label ?? 'Parent PPTO';
+    if (location.pathname === '/') return 'Parent PTO';
+    return links.find((item) => item.to === location.pathname)?.label ?? 'Parent PTO';
   }, [location.pathname]);
 
   return (

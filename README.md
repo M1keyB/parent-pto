@@ -1,4 +1,4 @@
-# Parent PPTO (Parent Paid Time Off)
+# Parent PTO (Parent Paid Time Off)
 
 A cozy, real-time PWA for two parents to coordinate daily effort, mint PTO minutes, and spend/schedule guilt-free breaks.
 

@@ -44,7 +44,7 @@ export function OnboardingPage() {
 
   return (
     <div className="onboarding-shell">
-      <PageContainer title="Parent PPTO" subtitle="A calmer way to share the home load.">
+      <PageContainer title="Parent PTO" subtitle="A calmer way to share the home load.">
         <Card className="glass-card">
           <div className="mode-toggle">
             <button type="button" className={mode === 'create' ? 'active' : ''} onClick={() => setMode('create')}>
