@@ -1,0 +1,75 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function householdDoc(householdId) {
+      return /databases/$(database)/documents/households/$(householdId);
+    }
+
+    function inHousehold(householdId) {
+      return isSignedIn() &&
+        get(householdDoc(householdId)).data.members[request.auth.uid] != null;
+    }
+
+    function inHouseholdAfter(householdId) {
+      return isSignedIn() &&
+        getAfter(householdDoc(householdId)).data.members[request.auth.uid] != null;
+    }
+
+    match /users/{uid} {
+      allow read, write: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    match /householdCodes/{code} {
+      allow read: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+
+    match /households/{householdId} {
+      allow read: if inHousehold(householdId);
+      allow create: if isSignedIn() && request.resource.data.members[request.auth.uid] != null;
+      allow update: if inHousehold(householdId) || inHouseholdAfter(householdId);
+      allow delete: if false;
+
+      match /members/{uid} {
+        allow read: if inHousehold(householdId);
+        allow create, update: if inHouseholdAfter(householdId);
+        allow delete: if false;
+      }
+
+      match /taskTemplates/{templateId} {
+        allow read: if inHousehold(householdId);
+        allow create, update: if inHouseholdAfter(householdId);
+        allow delete: if inHousehold(householdId);
+      }
+
+      match /dailyTasks/{dateKey}/items/{itemId} {
+        allow read: if inHousehold(householdId);
+        allow create, update: if inHouseholdAfter(householdId);
+        allow delete: if inHousehold(householdId);
+      }
+
+      match /events/{eventId} {
+        allow read: if inHousehold(householdId);
+        allow create, update: if inHouseholdAfter(householdId);
+        allow delete: if false;
+      }
+
+      match /feed/{feedId} {
+        allow read: if inHousehold(householdId);
+        allow create: if inHouseholdAfter(householdId);
+        allow update, delete: if false;
+      }
+
+      match /stats/{dateKey} {
+        allow read: if inHousehold(householdId);
+        allow create, update: if inHouseholdAfter(householdId);
+        allow delete: if false;
+      }
+    }
+  }
+}
